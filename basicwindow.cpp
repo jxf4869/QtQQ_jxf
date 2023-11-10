@@ -8,6 +8,8 @@
 #include <QPainter>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QSqlQuery>
+extern QString gLoginEmployeeID;
 
 BasicWindow::BasicWindow(QWidget *parent)
 	: QDialog(parent)
@@ -146,6 +148,11 @@ void BasicWindow::onShowNormal(bool)
 
 void BasicWindow::onShowQuit(bool)
 {
+	//1在线, 2离线
+	QSqlQuery strSqlStatus(QString("UPDATE tab_employees SET tab_employees.online = 2 WHERE employeeID = %1").arg(gLoginEmployeeID));
+	strSqlStatus.exec();
+
+
 	QApplication::quit();
 }
 

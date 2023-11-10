@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "BasicWindow.h"
 #include "ui_SendFile.h"
@@ -11,13 +11,14 @@ public:
 	SendFile(QWidget *parent = Q_NULLPTR);
 	~SendFile();
 
-signals://·¢ËÍÎÄ¼ş·¢ÉäµÄĞÅºÅ
+signals://å‘é€æ–‡ä»¶å‘å°„çš„ä¿¡å·
 	void sendFileClicked(QString &strData, int &msgType, QString fileName);
 
 private slots:
-	void on_openBtn_clicked();	//´ò¿ªÎÄ¼ş°´Å¥µã»÷
-	void on_sendBtn_clicked();	//·¢ËÍ°´Å¥°´Å¥µã»÷
+	void on_openBtn_clicked();	//æ‰“å¼€æ–‡ä»¶æŒ‰é’®ç‚¹å‡»
+	void on_sendBtn_clicked();	//å‘é€æŒ‰é’®æŒ‰é’®ç‚¹å‡»
+
 private:
 	Ui::SendFile ui;
-	QString m_filePath;			//Ñ¡ÔñµÄÎÄ¼şÂ·¾¶
+	QString m_filePath;			//é€‰æ‹©çš„æ–‡ä»¶è·¯å¾„
 };

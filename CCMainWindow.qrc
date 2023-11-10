@@ -363,5 +363,9 @@
         <file>Resources/MainWindow/Title/max.png</file>
         <file>Resources/MainWindow/Title/min.png</file>
         <file>Resources/MainWindow/Title/restore.png</file>
+        <file>Resources/QSS/SendFile.css</file>
+        <file>Resources/QSS/ReceiveFile.css</file>
+        <file>Resources/MainWindow/Sound/msg.wav</file>
+        <file>Resources/MainWindow/Sound/system.wav</file>
     </qresource>
 </RCC>

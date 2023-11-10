@@ -1,4 +1,4 @@
-#include "SendFile.h"
+﻿#include "SendFile.h"
 #include "TalkWindowShell.h"
 #include "WindowManager.h"
 #include <QFileDialog>
@@ -6,13 +6,13 @@
 
 SendFile::SendFile(QWidget *parent)
 	: BasicWindow(parent)
-	,m_filePath("")
+	,m_filePath("")//文件路径初始为空
 {
 	ui.setupUi(this);
-	setAttribute(Qt::WA_DeleteOnClose);
+	setAttribute(Qt::WA_DeleteOnClose);//窗口关闭时进行资源回收
 	initTitleBar();
 	setTitleBarTitle("", ":/Resources/MainWindow/qqlogoclassic.png");
-	loadStyleSheet("SendFile");
+	loadStyleSheet("SendFile");//加载样式
 	this->move(100, 400);
 
 	TalkWindowShell* talkWindowShell = WindowManager::getInstance()->getTalkWindowShell();
@@ -28,9 +28,10 @@ void SendFile::on_openBtn_clicked()
 {
 	m_filePath = QFileDialog::getOpenFileName(
 		this,
-		QString::fromLocal8Bit("ѡ���ļ�"),
-		"/",
-		QString::fromLocal8Bit("���͵��ļ�(*.txt *.doc);;�����ļ�(*.*);;")
+		QString::fromLocal8Bit("选择文件"),
+		"../",
+		QString::fromLocal8Bit("发送(*.txt);;发送( *.doc);;发送(*.html)\
+			;;过滤文件(*.txt *.doc *.html);;所有文件(*.*);;")
 	);
 	ui.lineEdit->setText(m_filePath);
 }
@@ -45,18 +46,18 @@ void SendFile::on_sendBtn_clicked()
 			int msgType = 2;
 			QString str = file.readAll();
 			
-			//�ļ�����
+			//文件名称
 			QFileInfo fileInfo(m_filePath);
 			QString fileName = fileInfo.fileName();
 
 			emit sendFileClicked(str, msgType, fileName);
 			file.close();
 		}
-		else
+		else//文件读取失败
 		{
 			QMessageBox::information(this,
-				QStringLiteral("��ʾ"),
-				QString::fromLocal8Bit("�����ļ�:%1ʧ�ܣ�").arg(m_filePath));
+				QStringLiteral("提示"),
+				QString::fromLocal8Bit("发送文件:%1失败！").arg(m_filePath));
 			this->close();
 			return;
 		}

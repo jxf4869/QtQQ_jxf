@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-
+#include "ReceiveFile.h"
 QString gLoginEmployeeID;//登录者QQ号(员工号)
 
 UserLogin::UserLogin(QWidget *parent)
@@ -114,8 +114,6 @@ bool UserLogin::veryfyAccountCode(bool &isAccountLogin, QString &strAccount)
 			return false;
 		}
 	}
-
-
 	return false;
 }
 
@@ -132,7 +130,12 @@ void UserLogin::onLoginBtnClicked()
 		ui.editPassword->setText("");
 		return;
 	}
-
+	//1在线, 2离线
+	QSqlQuery strSqlStatus(QString("UPDATE tab_employees SET tab_employees.online = 1 WHERE employeeID = %1").arg(gLoginEmployeeID));
+	strSqlStatus.exec();
+	
+	
+	
 	close();
 	CCMainWindow* mainwindow = new CCMainWindow(strAccount,isAccountLogin);
 	mainwindow->show();

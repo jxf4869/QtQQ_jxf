@@ -802,7 +802,11 @@ font:75 12pt &quot;微软雅黑&quot;;</string>
            </size>
           </property>
           <property name="text">
-           <string>应用宝</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="CCMainWindow.qrc">
+            <normaloff>:/Resources/MainWindow/bottom/qplusentrancebtn.png</normaloff>:/Resources/MainWindow/bottom/qplusentrancebtn.png</iconset>
           </property>
          </widget>
         </item>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SendFile</class>
- <widget class="QWidget" name="SendFile">
+ <class>ReceiveFile</class>
+ <widget class="QWidget" name="ReceiveFile">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>169</height>
+    <width>515</width>
+    <height>160</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,25 +18,25 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>519</width>
-    <height>169</height>
+    <width>515</width>
+    <height>160</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>519</width>
-    <height>619</height>
+    <width>515</width>
+    <height>160</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>SendFile</string>
+   <string>ReceiveFile</string>
   </property>
   <widget class="QWidget" name="titleWidget" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>519</width>
+     <width>515</width>
      <height>50</height>
     </rect>
    </property>
@@ -44,64 +44,60 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="bodyWidget" native="true">
+  <widget class="QWidget" name="bottomWidget" native="true">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>50</y>
-     <width>519</width>
-     <height>119</height>
+     <width>515</width>
+     <height>110</height>
     </rect>
    </property>
    <property name="bottomskin" stdset="0">
     <bool>true</bool>
    </property>
-   <widget class="QPushButton" name="openBtn">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>93</width>
-      <height>28</height>
+      <x>10</x>
+      <y>10</y>
+      <width>501</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <weight>75</weight>
-      <bold>true</bold>
+      <pointsize>17</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>选择文件:</string>
+     <string>收到来自xxx发来的文件,是否接受?</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="sendBtn">
+   <widget class="QPushButton" name="okBtn">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>70</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>接受</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cancelBtn">
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>80</y>
+      <y>70</y>
       <width>93</width>
       <height>28</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
     <property name="text">
-     <string>发送</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>40</y>
-      <width>381</width>
-      <height>28</height>
-     </rect>
+     <string>取消</string>
     </property>
    </widget>
   </widget>

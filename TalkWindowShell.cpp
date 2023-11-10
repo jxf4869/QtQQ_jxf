@@ -9,9 +9,14 @@
 #include <QFile>
 #include <QSqlQuery>
 #include "WindowManager.h"
+#include "ReceiveFile.h"
+#include <qmediaplayer.h>
 
 extern QString gLoginEmployeeID;
 const int gUdpPort = 6666;
+
+QString gfileName;//保存文件名称
+QString gfileData;//保存文件数据
 
 TalkWindowShell::TalkWindowShell(QWidget *parent)
 	: BasicWindow(parent)
@@ -452,8 +457,7 @@ void TalkWindowShell::onEmotionItemClicked(int emotionNum)
 void TalkWindowShell::processPendingData()
 {
 	//端口中有未处理的数据
-	bool isPendingDatagrams = m_udpReceiver->hasPendingDatagrams();
-	while(isPendingDatagrams)
+	while(m_udpReceiver->hasPendingDatagrams())
 	{
 		const static int groupFlagWidth = 1;	//群聊标志占位
 		const static int groupWidth     = 4;	//群QQ号宽度
@@ -526,11 +530,11 @@ void TalkWindowShell::processPendingData()
 				
 				//文件名称
 				QString fileName = strData.mid(posBytes + bytesWidth, posData_begin - posBytes - bytesWidth);
-				
+				gfileName = fileName;
 				//文件内容
 				int posData = posData_begin + QString("data_begin").length();//数据的位置
 				strMsg = strData.mid(posData);//文件数据
-
+				gfileData = strMsg;
 				//获取发送者姓名
 				QString sender;
 				int employeeID = strSendEmployeeID.toInt();
@@ -542,7 +546,20 @@ void TalkWindowShell::processPendingData()
 					sender = queryGroupName.value(0).toString();
 				}
 
-				//接收文件的后续操作。。。
+				
+				ReceiveFile* recveFile = new ReceiveFile(this);
+				connect(recveFile, &ReceiveFile::refuseFile, [this]() {//收到拒绝接受文件则直接退出
+					return;
+				});
+
+				QMediaPlayer* filePlayer = new QMediaPlayer(this);
+				filePlayer->setMedia(QUrl("qrc:/Resources/MainWindow/Sound/system.wav"));
+				filePlayer->setVolume(70);
+				filePlayer->play();
+
+				QString msgLabel = QString::fromLocal8Bit("收到来自%1发来的文件,是否接受?").arg(sender);
+				recveFile->setMsg(msgLabel);
+				recveFile->show();
 			}
 		}
 		//------------------单聊-----------------------
@@ -552,6 +569,11 @@ void TalkWindowShell::processPendingData()
 			strRecevieEmployeeID = strData.mid(groupFlagWidth + employeeWidth, employeeWidth);
 			//发送者的QQ号(聊天窗口ID)
 			strWindowID = strSendEmployeeID;
+
+			//不是发给我的信息不处理
+			if (strRecevieEmployeeID != gLoginEmployeeID) {
+				return;
+			}
 
 			//获取信息的类型
 			QChar cMsgType = btData[groupFlagWidth + employeeWidth + employeeWidth];
@@ -590,9 +612,36 @@ void TalkWindowShell::processPendingData()
 
 				//文件名称
 				QString fileName = strData.mid(posBytes + bytesWidth, posData_begin - posBytes - bytesWidth);
-			
+				gfileName = fileName;
 				//文件内容
 				strMsg = strData.mid(posData_begin + data_beginWidth);
+				gfileData = strMsg;
+
+				//接收文件的后续操作。。。
+				QString str_sendName;
+				QSqlQuery querySendName(QString("SELECT employee_name FROM tab_employees WHERE employeeID = %1").arg(strSendEmployeeID.toInt()));
+				querySendName.exec();
+
+				if (querySendName.first())
+				{
+					str_sendName = querySendName.value(0).toString();
+				}
+				ReceiveFile* recveFile = new ReceiveFile(this);
+				connect(recveFile, &ReceiveFile::refuseFile, [this]() {//收到拒绝接受文件则直接退出
+					return;
+					});
+				
+
+				QMediaPlayer* filePlayer = new QMediaPlayer(this);
+				filePlayer->setMedia(QUrl("qrc:/Resources/MainWindow/Sound/system.wav"));
+				filePlayer->setVolume(70);
+				filePlayer->play();
+
+				QString msgLabel = QString::fromLocal8Bit("收到来自%1发来的文件,是否接受?").arg(str_sendName);
+				recveFile->setMsg(msgLabel);
+				recveFile->show();
+
+
 			}
 		}
 
@@ -614,6 +663,11 @@ void TalkWindowShell::processPendingData()
 		//文件信息另作处理
 		if (msgType != 2)
 		{
+			QMediaPlayer* player = new QMediaPlayer(this);
+			player->setMedia(QUrl("qrc:/Resources/MainWindow/Sound/msg.wav"));
+			player->setVolume(70);
+			player->play();
+
 			int sendEmployeeID = strSendEmployeeID.toInt();
 			handleReceivedMsg(sendEmployeeID, msgType, strMsg);
 		}
